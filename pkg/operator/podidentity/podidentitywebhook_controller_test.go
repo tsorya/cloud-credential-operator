@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package awspodidentity
+package podidentity
 
 import (
 	"context"
@@ -130,13 +130,14 @@ func TestAWSPodIdentityWebhookController(t *testing.T) {
 			fakeClient := fake.NewClientBuilder().WithRuntimeObjects(test.existing...).Build()
 			fakeClientset := fakeclientgo.NewSimpleClientset()
 			r := &staticResourceReconciler{
-				client:        fakeClient,
-				clientset:     fakeClientset,
-				logger:        logger,
-				eventRecorder: events.NewInMemoryRecorder(""),
-				cache:         resourceapply.NewResourceCache(),
-				conditions:    []configv1.ClusterOperatorStatusCondition{},
-				imagePullSpec: "testimagepullspec",
+				client:         fakeClient,
+				clientset:      fakeClientset,
+				logger:         logger,
+				eventRecorder:  events.NewInMemoryRecorder(""),
+				cache:          resourceapply.NewResourceCache(),
+				conditions:     []configv1.ClusterOperatorStatusCondition{},
+				imagePullSpec:  "testimagepullspec",
+				podIdentityObj: AwsPodIdentity{},
 			}
 
 			_, err := r.Reconcile(context.TODO(), reconcile.Request{
